@@ -1,18 +1,18 @@
-import threading 
-import socket 
+import threading
+import socket
 
-alias = input('Choose an alias >>>>')
-client = socket.socket(socket.AF_INET6,socket.SOCK_STREAM)
-client.connect(('127.0.0.1',59000))
+alias = input('Choose an alias >>> ')
+client = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+client.connect(('::1', 59000))
 
-def client_recieve():
+def client_receive():
     while True:
         try:
-            message=client.recv(1024).decode('utf-8d')
-            if message =="alias?":
+            message = client.recv(1024).decode('utf-8')
+            if message == "alias?":
                 client.send(alias.encode('utf-8'))
             else:
-                print(message) 
+                print(message)
         except:
             print('Error!')
             client.close()
@@ -21,10 +21,10 @@ def client_recieve():
 def client_send():
     while True:
         message = f'{alias}: {input("")}'
-        clinet.send(message.encode('utf-8')) 
+        client.send(message.encode('utf-8'))
 
-recieve_thread = threading.Thread(target=client_recieve)
-recieve_thread.start()
+receive_thread = threading.Thread(target=client_receive)
+receive_thread.start()
 
-send_thread=threading.Thread(target=client_send)
+send_thread = threading.Thread(target=client_send)
 send_thread.start()
